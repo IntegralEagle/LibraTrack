@@ -205,3 +205,47 @@ export const getTransactions = async (req, res) => {
         });
     }
 };
+export const getDashboardStats = async (req, res) => {
+    try {
+        const totalResult = await pool.query(
+            `SELECT COALESCE(SUM(total_copies), 0) AS total_books
+             FROM books`
+        );
+
+        const availableResult = await pool.query(
+            `SELECT COALESCE(SUM(available_copies), 0) AS available_books
+             FROM books`
+        );
+
+        const issuedResult = await pool.query(
+            `SELECT COUNT(*) AS issued_books
+             FROM transactions
+             WHERE status = 'ISSUED'`
+        );
+
+        const overdueResult = await pool.query(
+            `SELECT COUNT(*) AS overdue_books
+             FROM transactions
+             WHERE status = 'ISSUED'
+             AND due_at < CURRENT_TIMESTAMP`
+        );
+
+        res.json({
+            success: true,
+            stats: {
+                totalBooks: Number(totalResult.rows[0].total_books),
+                availableBooks: Number(availableResult.rows[0].available_books),
+                issuedBooks: Number(issuedResult.rows[0].issued_books),
+                overdueBooks: Number(overdueResult.rows[0].overdue_books)
+            }
+        });
+
+    } catch (error) {
+        console.error("Dashboard stats error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch dashboard statistics"
+        });
+    }
+};
