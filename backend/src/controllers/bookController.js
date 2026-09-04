@@ -55,3 +55,62 @@ export const createBook = async (req, res) => {
         });
     }
 };
+export const getBooks = async (req, res) => {
+    try {
+        const { search, category, availability } = req.query;
+
+        let query = `
+            SELECT *
+            FROM books
+            WHERE 1=1
+        `;
+
+        const values = [];
+        let paramIndex = 1;
+
+        // Search by title or author
+        if (search) {
+            query += `
+                AND (
+                    title ILIKE $${paramIndex}
+                    OR author ILIKE $${paramIndex}
+                )
+            `;
+            values.push(`%${search}%`);
+            paramIndex++;
+        }
+
+        // Filter by category
+        if (category) {
+            query += ` AND category ILIKE $${paramIndex}`;
+            values.push(category);
+            paramIndex++;
+        }
+
+        // Filter by availability
+        if (availability === "available") {
+            query += ` AND available_copies > 0`;
+        }
+
+        if (availability === "issued") {
+            query += ` AND available_copies = 0`;
+        }
+
+        query += ` ORDER BY created_at DESC`;
+
+        const result = await pool.query(query, values);
+
+        res.json({
+            success: true,
+            books: result.rows
+        });
+
+    } catch (error) {
+        console.error("Get books error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch books"
+        });
+    }
+};
