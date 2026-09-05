@@ -1,3 +1,13 @@
+function ProtectedRoute({ children }) {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        window.location.href = "/";
+        return null;
+    }
+
+    return children;
+}
 import {
     BrowserRouter,
     Routes,
@@ -165,15 +175,44 @@ function App() {
         <BrowserRouter>
             <Navigation />
             <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/issue-return" element={<IssueReturn />} />
-                <Route path="/books" element={<Books />} />
-                <Route
-                    path="/transactions"
-                    element={<Transactions />}
-                />
-                            </Routes>
+    <Route path="/" element={<Login />} />
+
+    <Route
+        path="/dashboard"
+        element={
+            <ProtectedRoute>
+                <Dashboard />
+            </ProtectedRoute>
+        }
+    />
+
+    <Route
+        path="/books"
+        element={
+            <ProtectedRoute>
+                <Books />
+            </ProtectedRoute>
+        }
+    />
+
+    <Route
+        path="/issue-return"
+        element={
+            <ProtectedRoute>
+                <IssueReturn />
+            </ProtectedRoute>
+        }
+    />
+
+    <Route
+        path="/transactions"
+        element={
+            <ProtectedRoute>
+                <Transactions />
+            </ProtectedRoute>
+        }
+    />
+</Routes>
         </BrowserRouter>
     );
 }
