@@ -34,12 +34,22 @@ function Navigation() {
                 <p>Library Management</p>
             </div>
 
-            <div className="nav-links">
-                <Link to="/dashboard">Dashboard</Link>
-                <Link to="/books">Books</Link>
-                <Link to="/issue-return">Issue / Return</Link>
-                <Link to="/transactions">Transactions</Link>
-            </div>
+<div className="nav-links">
+    <Link to="/dashboard">Dashboard</Link>
+    <Link to="/books">Books</Link>
+    <Link to="/issue-return">Issue / Return</Link>
+    <Link to="/transactions">Transactions</Link>
+
+    <button
+        type="button"
+        onClick={() => {
+            localStorage.removeItem("token");
+            window.location.href = "/";
+        }}
+    >
+        Logout
+    </button>
+</div>
         </nav>
     );
 }
