@@ -253,6 +253,20 @@ export const getActiveTransactionByBook = async (req, res) => {
     try {
         const { book_id } = req.params;
 
+        const bookResult = await pool.query(
+            `SELECT id, book_id, title, author, available_copies
+             FROM books
+             WHERE book_id = $1`,
+            [book_id]
+        );
+
+        if (bookResult.rows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Book not found"
+            });
+        }
+
         const result = await pool.query(
             `SELECT
                 t.id,
@@ -284,10 +298,8 @@ export const getActiveTransactionByBook = async (req, res) => {
             success: true,
             transaction: result.rows[0]
         });
-
     } catch (error) {
         console.error("Get active transaction error:", error);
-
         res.status(500).json({
             success: false,
             message: "Failed to find active transaction"

@@ -36,9 +36,17 @@ function IssueReturn() {
             setActiveTransaction(response.data.transaction);
 
         } catch (error) {
-            // No active transaction means the book is available for issue.
-            setActiveTransaction(null);
-        } finally {
+            const errorMessage = error.response?.data?.message;
+        
+    if (errorMessage === "Book not found") {
+        setError("Invalid QR code: book not found");
+        setScannedBookId("");
+        setActiveTransaction(null);
+    } else {
+        // No active transaction means the book is available for issue.
+        setActiveTransaction(null);
+    }
+} finally {
             setLoadingTransaction(false);
         }
     };
