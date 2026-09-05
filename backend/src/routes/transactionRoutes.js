@@ -5,7 +5,8 @@ import {
     returnBook,
     getTransactions,
     getDashboardStats,
-    getActiveTransactionByBook
+    getActiveTransactionByBook,
+    getCurrentlyIssuedBooks
 } from "../controllers/transactionController.js";
 import { authenticate } from "../middleware/authMiddleware.js";
 
@@ -19,5 +20,10 @@ router.get(
     "/book/:book_id/active",
     authenticate,
     getActiveTransactionByBook
+);
+router.get(
+    "/currently-issued",
+    authenticate,
+    getCurrentlyIssuedBooks
 );
 export default router;

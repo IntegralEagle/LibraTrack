@@ -12,6 +12,7 @@ function Dashboard() {
         issuedBooks: 0,
         overdueBooks: 0
     });
+    const [issuedBooks, setIssuedBooks] = useState([]);
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -34,6 +35,29 @@ function Dashboard() {
         };
 
         fetchStats();
+        const fetchIssuedBooks = async () => {
+    try {
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(
+            "http://localhost:5000/api/transactions/currently-issued",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        setIssuedBooks(response.data.books);
+    } catch (error) {
+        console.error(
+            "Failed to fetch currently issued books:",
+            error
+        );
+    }
+};
+fetchStats();
+fetchIssuedBooks();
     }, []);
 
     return (
@@ -45,6 +69,49 @@ function Dashboard() {
                     <h3>Total Books</h3>
                     <p>{stats.totalBooks}</p>
                 </div>
+                <div className="issued-books-section">
+    <h3>Currently Issued Books</h3>
+
+    {issuedBooks.length === 0 ? (
+        <p>No books are currently issued.</p>
+    ) : (
+        <table className="books-table">
+            <thead>
+                <tr>
+                    <th>Book ID</th>
+                    <th>Book Title</th>
+                    <th>Borrower</th>
+                    <th>Email</th>
+                    <th>Due Date</th>
+                    <th>Days Overdue</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {issuedBooks.map((book) => (
+                    <tr key={book.id}>
+                        <td>{book.book_id}</td>
+                        <td>{book.title}</td>
+                        <td>{book.borrower_name}</td>
+                        <td>{book.borrower_email}</td>
+                        <td>
+                            {new Date(
+                                book.due_at
+                            ).toLocaleDateString()}
+                        </td>
+                        <td>
+                            {Number(book.days_overdue) > 0
+                                ? `${Math.floor(
+                                      Number(book.days_overdue)
+                                  )} days`
+                                : "On time"}
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    )}
+</div>
 
                 <div className="stat-card">
                     <h3>Available Books</h3>

@@ -294,3 +294,38 @@ export const getActiveTransactionByBook = async (req, res) => {
         });
     }
 };
+export const getCurrentlyIssuedBooks = async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT
+                t.id,
+                b.book_id,
+                b.title,
+                u.name AS borrower_name,
+                u.email AS borrower_email,
+                t.issued_at,
+                t.due_at,
+                CASE
+                    WHEN t.due_at < CURRENT_TIMESTAMP
+                    THEN EXTRACT(DAY FROM CURRENT_TIMESTAMP - t.due_at)
+                    ELSE 0
+                END AS days_overdue
+             FROM transactions t
+             JOIN books b ON t.book_id = b.id
+             JOIN users u ON t.user_id = u.id
+             WHERE t.status = 'ISSUED'
+             ORDER BY t.due_at ASC`
+        );
+
+        res.json({
+            success: true,
+            books: result.rows
+        });
+    } catch (error) {
+        console.error("Get currently issued books error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch currently issued books"
+        });
+    }
+};
