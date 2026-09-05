@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function Transactions() {
-    const [transactions, setTransactions] = useState([]);
-    const [error, setError] = useState("");
+        const [transactions, setTransactions] = useState([]);
+        const [error, setError] = useState("");
+        const [search, setSearch] = useState("");
+        const [statusFilter, setStatusFilter] = useState("ALL");
 
     useEffect(() => {
         const fetchTransactions = async () => {
@@ -29,10 +31,41 @@ function Transactions() {
 
         fetchTransactions();
     }, []);
+    const filteredTransactions = transactions.filter((transaction) => {
+    const searchText = search.toLowerCase();
+
+    const matchesSearch =
+        transaction.book_id.toLowerCase().includes(searchText) ||
+        transaction.title.toLowerCase().includes(searchText) ||
+        transaction.borrower_name.toLowerCase().includes(searchText);
+
+    const matchesStatus =
+        statusFilter === "ALL" ||
+        transaction.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+    });
 
     return (
         <div className="content">
             <h2>Transaction History</h2>
+            <div className="transaction-filters">
+    <input
+        type="text"
+        placeholder="Search by book or borrower..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+    />
+
+    <select
+        value={statusFilter}
+        onChange={(e) => setStatusFilter(e.target.value)}
+    >
+        <option value="ALL">All Status</option>
+        <option value="ISSUED">Issued</option>
+        <option value="RETURNED">Returned</option>
+    </select>
+</div>
 
             {error && (
                 <p className="login-error">
@@ -54,7 +87,7 @@ function Transactions() {
                 </thead>
 
                 <tbody>
-                    {transactions.map((transaction) => (
+                    {filteredTransactions.map((transaction) => (
                         <tr key={transaction.id}>
                             <td>{transaction.book_id}</td>
                             <td>{transaction.title}</td>
