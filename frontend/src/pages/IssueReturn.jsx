@@ -5,6 +5,8 @@ import QRScanner from "../components/QRScanner";
 function IssueReturn() {
     const [scannedBookId, setScannedBookId] = useState("");
     const [members, setMembers] = useState([]);
+    const [newMemberName, setNewMemberName] = useState("");
+    const [newMemberEmail, setNewMemberEmail] = useState("");
     const [selectedMember, setSelectedMember] = useState("");
     const [dueDate, setDueDate] = useState("");
     const [message, setMessage] = useState("");
@@ -51,29 +53,70 @@ function IssueReturn() {
         }
     };
 
-    useEffect(() => {
-        const fetchMembers = async () => {
-            try {
-                const token = localStorage.getItem("token");
+useEffect(() => {
+    const fetchMembers = async () => {
+        try {
+            const token = localStorage.getItem("token");
 
-                const response = await axios.get(
-                    "http://localhost:5000/api/auth/members",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
+            const response = await axios.get(
+                "http://localhost:5000/api/auth/members",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
                     }
-                );
+                }
+            );
 
-                setMembers(response.data.members);
+            setMembers(response.data.members);
+        } catch (error) {
+            console.error("Failed to fetch borrowers:", error);
+        }
+    };
 
-            } catch (error) {
-                console.error("Failed to fetch borrowers:", error);
+    fetchMembers();
+}, []);
+
+const handleAddMember = async () => {
+    if (!newMemberName || !newMemberEmail) {
+        setError("Please enter borrower name and email");
+        return;
+    }
+
+    try {
+        setError("");
+        setMessage("");
+
+        const token = localStorage.getItem("token");
+
+        const response = await axios.post(
+            "http://localhost:5000/api/auth/members",
+            {
+                name: newMemberName,
+                email: newMemberEmail
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             }
-        };
+        );
 
-        fetchMembers();
-    }, []);
+        setMembers((previous) => [
+            ...previous,
+            response.data.member
+        ]);
+
+        setNewMemberName("");
+        setNewMemberEmail("");
+
+        setMessage("Borrower added successfully!");
+    } catch (error) {
+        setError(
+            error.response?.data?.message ||
+            "Failed to add borrower"
+        );
+    }
+};
 
     const handleIssue = async () => {
         if (!scannedBookId || !selectedMember || !dueDate) {
@@ -153,6 +196,36 @@ function IssueReturn() {
             <h2>Issue / Return</h2>
 
             <div className="scanner-card">
+                <div className="add-member-card">
+    <h3>Add Borrower</h3>
+
+    <div className="member-form">
+        <input
+            type="text"
+            placeholder="Borrower name"
+            value={newMemberName}
+            onChange={(e) =>
+                setNewMemberName(e.target.value)
+            }
+        />
+
+        <input
+            type="email"
+            placeholder="Borrower email"
+            value={newMemberEmail}
+            onChange={(e) =>
+                setNewMemberEmail(e.target.value)
+            }
+        />
+
+        <button
+            type="button"
+            onClick={handleAddMember}
+        >
+            Add Borrower
+        </button>
+    </div>
+</div>
                 <h3>Scan Book QR Code</h3>
 
                 <QRScanner onScan={handleScan} />

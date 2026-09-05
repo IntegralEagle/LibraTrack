@@ -99,3 +99,48 @@ export const getMembers = async (req, res) => {
         });
     }
 };
+export const createMember = async (req, res) => {
+    try {
+        const { name, email } = req.body;
+
+        if (!name || !email) {
+            return res.status(400).json({
+                success: false,
+                message: "Name and email are required"
+            });
+        }
+
+        const passwordHash = await bcrypt.hash(
+            "member-account-no-login",
+            10
+        );
+
+        const result = await pool.query(
+            `INSERT INTO users
+             (name, email, password_hash, role)
+             VALUES ($1, $2, $3, 'MEMBER')
+             RETURNING id, name, email, role`,
+            [name, email, passwordHash]
+        );
+
+        res.status(201).json({
+            success: true,
+            message: "Borrower added successfully",
+            member: result.rows[0]
+        });
+    } catch (error) {
+        console.error("Create member error:", error);
+
+        if (error.code === "23505") {
+            return res.status(409).json({
+                success: false,
+                message: "A borrower with this email already exists"
+            });
+        }
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to add borrower"
+        });
+    }
+};
