@@ -13,7 +13,7 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT users_role_check
-        CHECK (role IN ('LIBRARIAN', 'ADMIN'))
+        CHECK (role IN ('LIBRARIAN', 'ADMIN', 'MEMBER'))
 );
 
 
@@ -90,9 +90,3 @@ ON transactions(status);
 CREATE INDEX idx_transactions_issued_at
 ON transactions(issued_at);
 
-
--- Prevent the same book from being actively issued
--- more than once when only one copy is available.
-CREATE UNIQUE INDEX idx_active_book_transaction
-ON transactions(book_id)
-WHERE status = 'ISSUED';
