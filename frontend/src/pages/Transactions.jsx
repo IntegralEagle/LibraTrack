@@ -6,6 +6,51 @@ function Transactions() {
         const [error, setError] = useState("");
         const [search, setSearch] = useState("");
         const [statusFilter, setStatusFilter] = useState("ALL");
+        const exportCSV = () => {
+    const headers = [
+        "Book Title",
+        "Author",
+        "Book ID",
+        "Issued To",
+        "Issue Timestamp",
+        "Return Timestamp",
+        "Current Status"
+    ];
+
+    const rows = filteredTransactions.map((transaction) => [
+        transaction.title,
+        transaction.author,
+        transaction.book_id,
+        transaction.borrower_name,
+        transaction.issued_at,
+        transaction.returned_at || "",
+        transaction.status
+    ]);
+
+    const csvContent = [
+        headers,
+        ...rows
+    ]
+        .map((row) =>
+            row
+                .map((value) => `"${String(value).replace(/"/g, '""')}"`)
+                .join(",")
+        )
+        .join("\n");
+
+    const blob = new Blob([csvContent], {
+        type: "text/csv;charset=utf-8;"
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "library_transaction_history.csv";
+    link.click();
+
+    URL.revokeObjectURL(url);
+};
 
     useEffect(() => {
         const fetchTransactions = async () => {
@@ -49,6 +94,9 @@ function Transactions() {
     return (
         <div className="content">
             <h2>Transaction History</h2>
+            <button type="button" onClick={exportCSV}>
+                     Export CSV
+            </button>
             <div className="transaction-filters">
     <input
         type="text"
