@@ -4,7 +4,7 @@ import axios from "axios";
 import Login from "./pages/Login";
 import Books from "./pages/Books";
 import IssueReturn from "./pages/IssueReturn";
-
+import Transactions from "./pages/Transactions";
 function Dashboard() {
     const [stats, setStats] = useState({
         totalBooks: 0,
@@ -73,7 +73,11 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/issue-return" element={<IssueReturn />} />
                 <Route path="/books" element={<Books />} />
-            </Routes>
+                <Route
+                    path="/transactions"
+                    element={<Transactions />}
+                />
+                            </Routes>
         </BrowserRouter>
     );
 }
