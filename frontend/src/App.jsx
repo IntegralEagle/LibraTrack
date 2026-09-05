@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Login from "./pages/Login";
 import Books from "./pages/Books";
+import IssueReturn from "./pages/IssueReturn";
 
 function Dashboard() {
     const [stats, setStats] = useState({
@@ -70,7 +71,8 @@ function App() {
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                 <Route path="/books" element={<Books />} />
+                <Route path="/issue-return" element={<IssueReturn />} />
+                <Route path="/books" element={<Books />} />
             </Routes>
         </BrowserRouter>
     );

@@ -249,3 +249,48 @@ export const getDashboardStats = async (req, res) => {
         });
     }
 };
+export const getActiveTransactionByBook = async (req, res) => {
+    try {
+        const { book_id } = req.params;
+
+        const result = await pool.query(
+            `SELECT
+                t.id,
+                b.book_id,
+                b.title,
+                u.id AS borrower_id,
+                u.name AS borrower_name,
+                u.email AS borrower_email,
+                t.issued_at,
+                t.due_at,
+                t.status
+             FROM transactions t
+             JOIN books b ON t.book_id = b.id
+             JOIN users u ON t.user_id = u.id
+             WHERE b.book_id = $1
+             AND t.status = 'ISSUED'
+             LIMIT 1`,
+            [book_id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "No active transaction found for this book"
+            });
+        }
+
+        res.json({
+            success: true,
+            transaction: result.rows[0]
+        });
+
+    } catch (error) {
+        console.error("Get active transaction error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to find active transaction"
+        });
+    }
+};

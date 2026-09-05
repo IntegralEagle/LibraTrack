@@ -76,3 +76,26 @@ export const login = async (req, res) => {
         });
     }
 };
+export const getMembers = async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT id, name, email
+             FROM users
+             WHERE role = 'MEMBER'
+             ORDER BY name`
+        );
+
+        res.json({
+            success: true,
+            members: result.rows
+        });
+
+    } catch (error) {
+        console.error("Get members error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch borrowers"
+        });
+    }
+};

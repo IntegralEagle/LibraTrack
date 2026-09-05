@@ -210,7 +210,7 @@ function Books() {
                                         <img
                                             src={qrCodes[book.book_id]}
                                             alt={`QR code for ${book.book_id}`}
-                                            width="100"
+                                            width="250"
                                         />
                                     </div>
                                 )}
