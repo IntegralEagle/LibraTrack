@@ -5,6 +5,9 @@ import QRCode from "qrcode";
 function Books() {
     const [books, setBooks] = useState([]);
     const [error, setError] = useState("");
+    const [search, setSearch] = useState("");
+    const [categoryFilter, setCategoryFilter] = useState("");
+    const [availabilityFilter, setAvailabilityFilter] = useState("ALL");
     const [qrCodes, setQrCodes] = useState({});
 
     const [form, setForm] = useState({
@@ -23,11 +26,24 @@ function Books() {
             const response = await axios.get(
                 "http://localhost:5000/api/books",
                 {
+                    params: {
+                        search: search,
+                        category: categoryFilter,
+                        availability:
+                            availabilityFilter === "ALL"
+                                ? ""
+                                : availabilityFilter
+                    },
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 }
             );
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
 
             setBooks(response.data.books);
         } catch (error) {
@@ -38,7 +54,7 @@ function Books() {
 
     useEffect(() => {
         fetchBooks();
-    }, []);
+    }, [search, categoryFilter, availabilityFilter]);
 
     const handleChange = (e) => {
         setForm({
@@ -105,6 +121,30 @@ function Books() {
     return (
         <div className="content">
             <h2>Books</h2>
+            <div className="book-filters">
+    <input
+        type="text"
+        placeholder="Search by title or author..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+    />
+
+    <input
+        type="text"
+        placeholder="Filter by category..."
+        value={categoryFilter}
+        onChange={(e) => setCategoryFilter(e.target.value)}
+    />
+
+    <select
+        value={availabilityFilter}
+        onChange={(e) => setAvailabilityFilter(e.target.value)}
+    >
+        <option value="ALL">All Availability</option>
+        <option value="available">Available</option>
+        <option value="issued">Issued</option>
+    </select>
+</div>
 
             <div className="add-book-card">
                 <h3>Add New Book</h3>

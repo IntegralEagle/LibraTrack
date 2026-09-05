@@ -270,3 +270,24 @@ body {
 .transaction-filters input {
     flex: 1;
 }
+.book-filters {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.book-filters input,
+.book-filters select {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.book-filters input:first-child {
+    flex: 2;
+}
+
+.book-filters input:nth-child(2) {
+    flex: 1;
+}
