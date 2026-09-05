@@ -291,3 +291,36 @@ body {
 .book-filters input:nth-child(2) {
     flex: 1;
 }
+.navigation {
+    background: #1f2937;
+    color: white;
+    padding: 18px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-brand h2 {
+    margin-bottom: 4px;
+}
+
+.nav-brand p {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.nav-links {
+    display: flex;
+    gap: 12px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+}
+
+.nav-links a:hover {
+    background: #374151;
+}

@@ -1,10 +1,38 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+    Link,
+    useLocation
+} from "react-router-dom";import { useEffect, useState } from "react";
 import axios from "axios";
 import Login from "./pages/Login";
 import Books from "./pages/Books";
 import IssueReturn from "./pages/IssueReturn";
 import Transactions from "./pages/Transactions";
+function Navigation() {
+    const location = useLocation();
+
+    if (location.pathname === "/") {
+        return null;
+    }
+
+    return (
+        <nav className="navigation">
+            <div className="nav-brand">
+                <h2>LibraTrack</h2>
+                <p>Library Management</p>
+            </div>
+
+            <div className="nav-links">
+                <Link to="/dashboard">Dashboard</Link>
+                <Link to="/books">Books</Link>
+                <Link to="/issue-return">Issue / Return</Link>
+                <Link to="/transactions">Transactions</Link>
+            </div>
+        </nav>
+    );
+}
 function Dashboard() {
     const [stats, setStats] = useState({
         totalBooks: 0,
@@ -135,6 +163,7 @@ fetchIssuedBooks();
 function App() {
     return (
         <BrowserRouter>
+            <Navigation />
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
