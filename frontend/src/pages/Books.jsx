@@ -24,7 +24,7 @@ function Books() {
             const token = localStorage.getItem("token");
 
             const response = await axios.get(
-                "http://localhost:5000/api/books",
+                "https://libra-track-orpin.vercel.app/api/books",
                 {
                     params: {
                         search: search,
@@ -71,7 +71,7 @@ function Books() {
             const token = localStorage.getItem("token");
 
             await axios.post(
-                "http://localhost:5000/api/books",
+                "https://libra-track-orpin.vercel.app/api/books",
                 {
                     ...form,
                     total_copies: Number(form.total_copies)

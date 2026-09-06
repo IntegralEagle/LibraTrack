@@ -68,7 +68,7 @@ function Dashboard() {
                 const token = localStorage.getItem("token");
 
                 const response = await axios.get(
-                    "http://localhost:5000/api/transactions/stats",
+                    "https://libra-track-orpin.vercel.app/api/transactions/stats",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`
@@ -88,7 +88,7 @@ function Dashboard() {
         const token = localStorage.getItem("token");
 
         const response = await axios.get(
-            "http://localhost:5000/api/transactions/currently-issued",
+            "https://libra-track-orpin.vercel.app/api/transactions/currently-issued",
             {
                 headers: {
                     Authorization: `Bearer ${token}`

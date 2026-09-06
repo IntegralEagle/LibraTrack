@@ -58,7 +58,7 @@ function Transactions() {
                 const token = localStorage.getItem("token");
 
                 const response = await axios.get(
-                    "http://localhost:5000/api/transactions",
+                    "https://libra-track-orpin.vercel.app/api/transactions",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`

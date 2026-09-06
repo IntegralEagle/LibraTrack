@@ -27,7 +27,7 @@ function IssueReturn() {
             const token = localStorage.getItem("token");
 
             const response = await axios.get(
-                `http://localhost:5000/api/transactions/book/${bookId}/active`,
+                `https://libra-track-orpin.vercel.app/api/transactions/book/${bookId}/active`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -59,7 +59,7 @@ useEffect(() => {
             const token = localStorage.getItem("token");
 
             const response = await axios.get(
-                "http://localhost:5000/api/auth/members",
+                "https://libra-track-orpin.vercel.app/api/auth/members",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -89,7 +89,7 @@ const handleAddMember = async () => {
         const token = localStorage.getItem("token");
 
         const response = await axios.post(
-            "http://localhost:5000/api/auth/members",
+            "https://libra-track-orpin.vercel.app/api/auth/members",
             {
                 name: newMemberName,
                 email: newMemberEmail
@@ -133,7 +133,7 @@ const handleAddMember = async () => {
             const token = localStorage.getItem("token");
 
             await axios.post(
-                "http://localhost:5000/api/transactions/issue",
+                "https://libra-track-orpin.vercel.app/api/transactions/issue",
                 {
                     book_id: scannedBookId,
                     user_id: Number(selectedMember),
@@ -168,7 +168,7 @@ const handleAddMember = async () => {
             const token = localStorage.getItem("token");
 
             await axios.post(
-                "http://localhost:5000/api/transactions/return",
+                "https://libra-track-orpin.vercel.app/api/transactions/return",
                 {
                     transaction_id: activeTransaction.id
                 },
