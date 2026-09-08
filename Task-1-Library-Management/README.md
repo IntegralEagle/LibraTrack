@@ -148,3 +148,27 @@ https://github.com/IntegralEagle/LibraTrack
                         v
                 PostgreSQL Database
                    (Neon PostgreSQL)
+
+## Concepts Learned
+
+While developing LibraTrack, I gained practical experience with:
+
+- Building a full-stack application using React, Node.js, Express, and PostgreSQL
+- Designing and consuming REST APIs
+- Implementing JWT-based authentication and protected routes
+- Using bcryptjs for password hashing
+- Connecting a Node.js backend to PostgreSQL
+- Designing relational database tables and foreign-key relationships
+- Managing database transactions and row locking for safe book issuing
+- Implementing QR code generation and camera-based QR scanning
+- Handling validation and backend error cases
+- Managing book availability using database-driven business logic
+- Deploying frontend and backend applications using Vercel
+- Using Neon as a hosted PostgreSQL database
+- Using Git and GitHub for version control
+- Making a React application responsive for mobile devices
+- Adding subtle UI animations using Motion
+
+## Submission
+
+**Task:** Task 1 — Library Book Issue & Return Management System
