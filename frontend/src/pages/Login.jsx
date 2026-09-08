@@ -65,6 +65,20 @@ function Login() {
                         {error}
                     </p>
                 )}
+
+                <div className="demo-credentials">
+                    <h3>Demo Credentials</h3>
+
+                    <p>
+                        <strong>Email:</strong>{" "}
+                        demo@libratrack.com
+                    </p>
+
+                    <p>
+                        <strong>Password:</strong>{" "}
+                        Demo@123
+                    </p>
+                </div>
             </div>
         </div>
     );
