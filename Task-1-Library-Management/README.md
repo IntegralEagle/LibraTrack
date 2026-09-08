@@ -102,6 +102,23 @@ https://github.com/IntegralEagle/LibraTrack
 - Horizontally scrollable data tables on small screens
 - Subtle UI animations using Motion
 
+## Screenshots
+
+### Login
+
+![LibraTrack Login](Screenshots/login.png)
+
+### Dashboard
+
+![LibraTrack Dashboard](Screenshots/Dashboard.png)
+
+### Book Management
+
+![LibraTrack Books](Screenshots/Books.png)
+
+### QR Issue & Return
+
+![LibraTrack Issue and Return](Screenshots/Issue.png)
 ---
 
 ## Technology Stack
