@@ -631,3 +631,64 @@ body {
     font-weight: 700;
     margin: 0;
 }
+/* ---------- NAVIGATION POLISH ---------- */
+
+.nav-links a,
+.nav-links button {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-links button:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+/* ---------- FINAL UI POLISH ---------- */
+
+.content {
+    animation: contentFadeIn 0.35s ease-out;
+}
+
+.content h2 {
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}
+
+.issued-books-section,
+.add-member-card,
+.table-container,
+.transactions-container {
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+input,
+select {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #64748b;
+    box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.12);
+}
+
+button {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+@keyframes contentFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
