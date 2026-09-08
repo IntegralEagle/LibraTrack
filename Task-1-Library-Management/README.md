@@ -119,6 +119,10 @@ https://github.com/IntegralEagle/LibraTrack
 ### QR Issue & Return
 
 ![LibraTrack Issue and Return](Screenshots/Issue.png)
+
+### Transactions & Reports
+
+![LibraTrack Transactions](Screenshots/Transactions.png)
 ---
 
 ## Technology Stack
